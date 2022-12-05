@@ -131,10 +131,10 @@ class Simulation:
 
 
 def parse_output(output):
-    actions = [Action(**Action.line_to_action(line)) for line in output.split("\n")]
+    actions = [Action(*Action.line_to_action(line)) for line in output.split("\n")]
     actions = {}
     for line in output.split("\n"):
-        action = line_to_action(line)
+        action = Action.line_to_action(line)
         if action[0] is not None:
             if action[1] not in actions:
                 actions[action[1]] = []
@@ -144,7 +144,9 @@ def parse_output(output):
 
 def count_min_eat(output):
     actions = parse_output(output)
-    return Counter(actions["eating"]).most_common()[:-2:-1][0][1]
+    if "eating" in actions:
+        return Counter(actions["eating"]).most_common()[:-2:-1][0][1]
+    return 0
 
 
 def print_output(v, output):
