@@ -138,15 +138,17 @@ def parse_output(output):
         if action[0] is not None:
             if action[1] not in actions:
                 actions[action[1]] = []
-            actions[action[1]].append(action[0])
+            actions[action[1]].append(action[2])
     return actions
 
 
 def count_min_eat(output):
+    meals = []
     actions = parse_output(output)
-    if "eating" in actions:
-        return Counter(actions["eating"]).most_common()[:-2:-1][0][1]
-    return 0
+    for philo, acts in actions.items():
+        nb_meals = acts.count('eating')
+        meals.append(nb_meals)
+    return min(meals)
 
 
 def print_output(v, output):
